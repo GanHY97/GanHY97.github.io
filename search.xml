@@ -4,33 +4,6 @@
   
     
     <entry>
-      <title>第一个博客</title>
-      <link href="2022/01/10/hello-world/"/>
-      <url>2022/01/10/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>本博客主要记录 <a href="https://github.com/GanHY97">XGG</a> 的一些学习日常以及生活点滴。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> hexo </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> hexo </tag>
-            
-            <tag> butterfly </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Classification-by-Fusing-Multimodal-Data</title>
       <link href="2022/01/09/Classification-by-Fusing-Multimodal-Data/"/>
       <url>2022/01/09/Classification-by-Fusing-Multimodal-Data/</url>
@@ -52,6 +25,33 @@
             <tag> vgg </tag>
             
             <tag> multimodal </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>第一个博客</title>
+      <link href="2022/01/07/hello-world/"/>
+      <url>2022/01/07/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>本博客主要记录 <a href="https://github.com/GanHY97">XGG</a> 的一些学习日常以及生活点滴。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> hexo </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> butterfly </tag>
             
         </tags>
       
