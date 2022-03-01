@@ -1,0 +1,451 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux信号 | XGG的博客</title><meta name="keywords" content="linux"><meta name="author" content="XGG"><meta name="copyright" content="XGG"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Linux信号 ¶1、信号的基本概念 信号（signal）是软件中断，是进程之间相互传递消息的一种方法，用于通知进程发生了事件，但是，不能给进程传递任何数据。 信号产生的原因有很多，在Linux下，可以用kill和killall命令发送信号。 ¶2、信号的类型    信号名 信号值 默认处理动作 发出信号的原因     SIGHUP 1 A 终端挂起或者控制进程终止   SIGINT 2 A 键盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux信号">
+<meta property="og:url" content="https://ganhy97.github.io/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/index.html">
+<meta property="og:site_name" content="XGG的博客">
+<meta property="og:description" content="Linux信号 ¶1、信号的基本概念 信号（signal）是软件中断，是进程之间相互传递消息的一种方法，用于通知进程发生了事件，但是，不能给进程传递任何数据。 信号产生的原因有很多，在Linux下，可以用kill和killall命令发送信号。 ¶2、信号的类型    信号名 信号值 默认处理动作 发出信号的原因     SIGHUP 1 A 终端挂起或者控制进程终止   SIGINT 2 A 键盘">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ganhy97.github.io/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/linux%E4%BF%A1%E5%8F%B7.jfif">
+<meta property="article:published_time" content="2021-06-10T11:25:17.000Z">
+<meta property="article:modified_time" content="2022-03-01T11:45:31.457Z">
+<meta property="article:author" content="XGG">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ganhy97.github.io/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/linux%E4%BF%A1%E5%8F%B7.jfif"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ganhy97.github.io/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-01 19:45:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/linux%E4%BF%A1%E5%8F%B7.jfif')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">XGG的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux信号</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-06-10T11:25:17.000Z" title="undefined 2021-06-10 19:25:17">2021-06-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>Linux信号</h1>
+<h2 id="1、信号的基本概念"><a class="header-anchor" href="#1、信号的基本概念">¶</a>1、信号的基本概念</h2>
+<p>信号（signal）是软件中断，是进程之间相互传递消息的一种方法，用于通知进程发生了事件，但是，不能给进程传递任何数据。</p>
+<p>信号产生的原因有很多，在Linux下，可以用kill和killall命令发送信号。</p>
+<h2 id="2、信号的类型"><a class="header-anchor" href="#2、信号的类型">¶</a>2、信号的类型</h2>
+<table>
+<thead>
+<tr>
+<th>信号名</th>
+<th style="text-align:center">信号值</th>
+<th style="text-align:center">默认处理动作</th>
+<th style="text-align:left">发出信号的原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIGHUP</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">A</td>
+<td style="text-align:left">终端挂起或者控制进程终止</td>
+</tr>
+<tr>
+<td><strong>SIGINT</strong></td>
+<td style="text-align:center"><strong>2</strong></td>
+<td style="text-align:center"><strong>A</strong></td>
+<td style="text-align:left"><strong>键盘中断Ctrl+c</strong></td>
+</tr>
+<tr>
+<td>SIGQUIT</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">C</td>
+<td style="text-align:left">键盘的退出键被按下</td>
+</tr>
+<tr>
+<td>SIGILL</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">C</td>
+<td style="text-align:left">非法指令</td>
+</tr>
+<tr>
+<td>SIGABRT</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">C</td>
+<td style="text-align:left">由abort(3)发出的退出指令</td>
+</tr>
+<tr>
+<td>SIGFPE</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">C</td>
+<td style="text-align:left">浮点异常</td>
+</tr>
+<tr>
+<td><strong>SIGKILL</strong></td>
+<td style="text-align:center"><strong>9</strong></td>
+<td style="text-align:center"><strong>AEF</strong></td>
+<td style="text-align:left"><strong>采用kill  -9 进程编号 强制杀死程序。</strong></td>
+</tr>
+<tr>
+<td>SIGSEGV</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">C</td>
+<td style="text-align:left">无效的内存引用</td>
+</tr>
+<tr>
+<td>SIGPIPE</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">A</td>
+<td style="text-align:left">管道破裂，写一个没有读端口的管道。</td>
+</tr>
+<tr>
+<td><strong>SIGALRM</strong></td>
+<td style="text-align:center"><strong>14</strong></td>
+<td style="text-align:center"><strong>A</strong></td>
+<td style="text-align:left"><strong>由alarm(2)发出的信号</strong></td>
+</tr>
+<tr>
+<td><strong>SIGTERM</strong></td>
+<td style="text-align:center"><strong>15</strong></td>
+<td style="text-align:center"><strong>A</strong></td>
+<td style="text-align:left"><strong>采用“kill  进程编号”或“killall 程序名”通知程序。</strong></td>
+</tr>
+<tr>
+<td><strong>SIGUSR1</strong></td>
+<td style="text-align:center"><strong>10</strong></td>
+<td style="text-align:center"><strong>A</strong></td>
+<td style="text-align:left"><strong>用户自定义信号1</strong></td>
+</tr>
+<tr>
+<td><strong>SIGUSR2</strong></td>
+<td style="text-align:center"><strong>12</strong></td>
+<td style="text-align:center"><strong>A</strong></td>
+<td style="text-align:left"><strong>用户自定义信号2</strong></td>
+</tr>
+<tr>
+<td><strong>SIGCHLD</strong></td>
+<td style="text-align:center"><strong>17</strong></td>
+<td style="text-align:center"><strong>B</strong></td>
+<td style="text-align:left"><strong>子进程结束信号</strong></td>
+</tr>
+<tr>
+<td>SIGCONT</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">进程继续（曾被停止的进程）</td>
+</tr>
+<tr>
+<td>SIGSTOP</td>
+<td style="text-align:center">19</td>
+<td style="text-align:center">DEF</td>
+<td style="text-align:left">终止进程</td>
+</tr>
+<tr>
+<td>SIGTSTP</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">D</td>
+<td style="text-align:left">控制终端（tty）上按下停止键</td>
+</tr>
+<tr>
+<td>SIGTTIN</td>
+<td style="text-align:center">21</td>
+<td style="text-align:center">D</td>
+<td style="text-align:left">后台进程企图从控制终端读</td>
+</tr>
+<tr>
+<td>SIGTTOU</td>
+<td style="text-align:center">22</td>
+<td style="text-align:center">D</td>
+<td style="text-align:left">后台进程企图从控制终端写</td>
+</tr>
+</tbody>
+</table>
+<p>处理动作一项中的字母含义如下</p>
+<p>A 缺省的动作是终止进程。</p>
+<p>B 缺省的动作是忽略此信号，将该信号丢弃，不做处理。</p>
+<p>C 缺省的动作是终止进程并进行内核映像转储（core dump），内核映像转储是指将进程数据在内存的映像和进程在内核结构中的部分内容以一定格式转储到文件系统，并且进程退出执行，这样做的好处是为程序员 提供了方便，使得他们可以得到进程当时执行时的数据值，允许他们确定转储的原因，并且可以调试他们的程序。</p>
+<p>D 缺省的动作是停止进程，进入停止状态的程序还能重新继续，一般是在调试的过程中。</p>
+<p>E 信号不能被捕获。</p>
+<p>F 信号不能被忽略。</p>
+<h2 id="3、信号的处理"><a class="header-anchor" href="#3、信号的处理">¶</a>3、信号的处理</h2>
+<p>进程对信号的处理方法有三种：</p>
+<p>1）对该信号的处理采用系统的默认操作，大部分的信号的默认操作是终止进程。</p>
+<p>2）设置中断的处理函数，收到信号后，由该函数来处理。</p>
+<p>3）忽略某个信号，对该信号不做任何处理，就像未发生过一样。</p>
+<p>signal函数可以设置程序对信号的处理方式。</p>
+<p>函数声明：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">sighandler_t</span> <span class="title">signal</span><span class="params">(<span class="keyword">int</span> signum, <span class="keyword">sighandler_t</span> handler)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+<p>参数signum表示信号的编号。</p>
+<p>参数handler表示信号的处理方式，有三种情况：</p>
+<p>1）SIG_DFL：恢复参数signum所指信号的处理方法为默认值。</p>
+<p>2）一个自定义的处理信号的函数，信号的编号为这个自定义函数的参数。</p>
+<p>3）SIG_IGN：忽略参数signum所指的信号。</p>
+<h2 id="4、信号有什么用"><a class="header-anchor" href="#4、信号有什么用">¶</a>4、信号有什么用</h2>
+<p>服务程序运行在后台，如果想让中止它，杀掉不是个好办法，因为程序被杀的时候，程序突然死亡，没有安排善后工作。</p>
+<p>如果向服务程序发送一个信号，服务程序收到这个信号后，调用一个函数，在函数中编写善后的代码，程序就可以有计划的退出。</p>
+<p>向服务程序发送0的信号，可以检测程序是否存活。</p>
+<h2 id="5、信号应用示例"><a class="header-anchor" href="#5、信号应用示例">¶</a>5、信号应用示例</h2>
+<p>在实际开发中，在main函数开始的位置，程序员会先屏蔽掉全部的信号。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> ii=<span class="number">1</span>;ii&lt;=<span class="number">64</span>;ii++) signal(ii,SIG_IGN);</span><br></pre></td></tr></tbody></table></figure>
+<p>这么做的目的是不希望程序被干扰。然后，再设置程序员关心的信号的处理函数。</p>
+<p>程序在运行的进程中，如果按Ctrl+c，将向程序发出SIGINT信号，编号是2。</p>
+<p>采用“kill 进程编号”或“killall 程序名”向程序发出的是SIGTERM信号，编号是15。</p>
+<p>采用“kill -9 进程编号”向程序发出的是SIGKILL信号，编号是9，此信号不能被忽略，也无法捕获，程序将突然死亡。</p>
+<p>设置SIGINT和SIGTERM两个信号的处理函数，这两个信号可以使用同一个处理函数，函数的代码是释放资源。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> \* 本程序演示信号的用法。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">\<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">\<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line">\<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line">\<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line">\<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EXIT</span><span class="params">(<span class="keyword">int</span> sig)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">"收到了信号%d，程序退出。\n"</span>,sig);</span><br><span class="line"> <span class="comment">// 在这里添加释放资源的代码</span></span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">0</span>);  <span class="comment">// 程序退出。</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> ii=<span class="number">1</span>;ii&lt;=<span class="number">64</span>;ii++) signal(ii,SIG_IGN); <span class="comment">// 屏蔽全部的信号</span></span><br><span class="line"> signal(SIGINT,EXIT); signal(SIGTERM,EXIT); <span class="comment">// 设置SIGINT和SIGTERM的处理函数</span></span><br><span class="line"> <span class="keyword">while</span> (<span class="literal">true</span>) <span class="comment">// 每隔一秒执行一次任务。</span></span><br><span class="line"> {</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"执行了一次任务。\n"</span>);</span><br><span class="line">  sleep(<span class="number">1</span>);</span><br><span class="line"> }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>不管是用Ctrl+c还是kill，程序都能体面的退出。</p>
+<h2 id="6、发送信号"><a class="header-anchor" href="#6、发送信号">¶</a>6、发送信号</h2>
+<p>Linux操作系统提供了kill和killall命令向程序发送信号，C语言也提供了kill库函数，用于在程序中向其它进程或者线程发送信号。</p>
+<p>函数声明：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kill</span><span class="params">(<span class="keyword">pid_t</span> pid, <span class="keyword">int</span> sig)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+<p>kill函数将参数sig指定的信号给参数pid 指定的进程。</p>
+<p>参数pid 有几种情况：</p>
+<p>1）pid&gt;0 将信号传给进程号为pid 的进程。</p>
+<p>2）pid=0 将信号传给和目前进程相同进程组的所有进程，常用于父进程给子进程发送信号，注意，发送信号者进程也会收到自己发出的信号。</p>
+<p>3）pid=-1 将信号广播传送给系统内所有的进程，例如系统关机时，会向所有的登录窗口广播关机信息。</p>
+<p>sig：准备发送的信号代码，假如其值为零则没有任何信号送出，但是系统会执行错误检查，通常会利用sig值为零来检验某个进程是否仍在运行。</p>
+<p>返回值说明： 成功执行时，返回0；失败返回-1，errno被设为以下的某个值。</p>
+<p>EINVAL：指定的信号码无效（参数 sig 不合法）。</p>
+<p>EPERM：权限不够无法传送信号给指定进程。</p>
+<p>ESRCH：参数 pid 所指定的进程或进程组不存在。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">XGG</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ganhy97.github.io/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/">https://ganhy97.github.io/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ganhy97.github.io" target="_blank">XGG的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/linux/">linux</a></div><div class="post_share"><div class="social-share" data-image="/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/linux%E4%BF%A1%E5%8F%B7.jfif" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/06/11/Linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB/"><img class="prev-cover" src="/2021/06/11/Linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB/linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB.jfif" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux内存共享</div></div></a></div><div class="next-post pull-right"><a href="/2021/06/07/hello-world/"><img class="next-cover" src="/2021/06/07/hello-world/hello.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">第一个博客</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/06/11/Linux内存共享/" title="Linux内存共享"><img class="cover" src="/2021/06/11/Linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB/linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB.jfif" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-11</div><div class="title">Linux内存共享</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">XGG</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GanHY97"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xiaokar" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://mail.qq.com/cgi-bin/frame_html?sid=LSKX9H6sFOy6IA9v&amp;r=70681e9e1f96e62c74c698c8b5939577" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎光临本站，若喜欢请收藏^_^</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Linux信号</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">1、信号的基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E4%BF%A1%E5%8F%B7%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">2、信号的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">3、信号的处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E4%BF%A1%E5%8F%B7%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">4、信号有什么用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E4%BF%A1%E5%8F%B7%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.5.</span> <span class="toc-text">5、信号应用示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%8F%91%E9%80%81%E4%BF%A1%E5%8F%B7"><span class="toc-number">1.6.</span> <span class="toc-text">6、发送信号</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/10/09/Classification-by-Fusing-Multimodal-Data/" title="Classification-by-Fusing-Multimodal-Data"><img src="/2021/10/09/Classification-by-Fusing-Multimodal-Data/%E8%AE%BA%E6%96%87%E6%88%AA%E5%9B%BE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Classification-by-Fusing-Multimodal-Data"/></a><div class="content"><a class="title" href="/2021/10/09/Classification-by-Fusing-Multimodal-Data/" title="Classification-by-Fusing-Multimodal-Data">Classification-by-Fusing-Multimodal-Data</a><time datetime="2021-10-08T19:11:39.000Z" title="发表于 2021-10-09 03:11:39">2021-10-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/11/Linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB/" title="Linux内存共享"><img src="/2021/06/11/Linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB/linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB.jfif" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux内存共享"/></a><div class="content"><a class="title" href="/2021/06/11/Linux%E5%86%85%E5%AD%98%E5%85%B1%E4%BA%AB/" title="Linux内存共享">Linux内存共享</a><time datetime="2021-06-11T11:25:17.000Z" title="发表于 2021-06-11 19:25:17">2021-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/" title="Linux信号"><img src="/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/linux%E4%BF%A1%E5%8F%B7.jfif" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux信号"/></a><div class="content"><a class="title" href="/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/" title="Linux信号">Linux信号</a><time datetime="2021-06-10T11:25:17.000Z" title="发表于 2021-06-10 19:25:17">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/07/hello-world/" title="第一个博客"><img src="/2021/06/07/hello-world/hello.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="第一个博客"/></a><div class="content"><a class="title" href="/2021/06/07/hello-world/" title="第一个博客">第一个博客</a><time datetime="2021-06-06T16:05:20.000Z" title="发表于 2021-06-07 00:05:20">2021-06-07</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/2021/06/10/Linux%E4%BF%A1%E5%8F%B7/linux%E4%BF%A1%E5%8F%B7.jfif')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By XGG</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">欢迎下次光临!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    let initData = {
+      el: '#waline-wrap',
+      serverURL: 'https://waline-c9yxt9o8q-ganhy97.vercel.app',
+      avatar: 'monsterid',
+      path: location.pathname,
+      emojiCDN: '',
+      emojiMaps: "",
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const waline = new Waline(initData)
+  }
+
+  if (typeof Waline === 'function') initWaline() 
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !true) {
+  if (true) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script async data-pjax src="/js/randombg.js"></script><div class="aplayer no-destroy" data-id="8310724654" data-server="tencent" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><link rel="stylesheet" href="/css/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>
