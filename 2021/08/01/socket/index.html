@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ganhy97.github.io/2021/08/01/socket/%E4%B8%89%E7%86%8A.JPG">
 <meta property="article:published_time" content="2021-08-01T06:52:09.000Z">
-<meta property="article:modified_time" content="2022-03-06T09:22:38.708Z">
+<meta property="article:modified_time" content="2022-03-06T09:24:13.639Z">
 <meta property="article:author" content="XGG">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="TCP">
@@ -59,7 +59,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2022-03-06 17:22:38'
+  postUpdate: '2022-03-06 17:24:13'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -168,7 +168,7 @@
 </li>
 <li>
 <p>addr：一个const struct sockaddr *指针，指向要绑定给sockfd的协议地址。这个地址结构根据地址创建socket时的地址协议族的不同而不同，如ipv4对应的是：</p>
-<figure class="highlight cc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> {</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>    sin_family; </span><br><span class="line">    <span class="keyword">in_port_t</span>      sin_port;   </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span>   </span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> {</span></span><br><span class="line">    <span class="keyword">uint32_t</span>       s_addr;     </span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> {</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>    sin_family; </span><br><span class="line">    <span class="keyword">in_port_t</span>      sin_port;   </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span>   </span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> {</span></span><br><span class="line">    <span class="keyword">uint32_t</span>       s_addr;     </span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
 <p>ipv6对应的是：</p>
 <figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in6</span> {</span> </span><br><span class="line">    <span class="keyword">sa_family_t</span>     sin6_family;    </span><br><span class="line">    <span class="keyword">in_port_t</span>       sin6_port;      </span><br><span class="line">    <span class="keyword">uint32_t</span>        sin6_flowinfo;  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in6_addr</span> <span class="title">sin6_addr</span>;</span>      </span><br><span class="line">    <span class="keyword">uint32_t</span>        sin6_scope_id;  </span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in6_addr</span> {</span> </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span>   s6_addr[<span class="number">16</span>];    </span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
 </li>
