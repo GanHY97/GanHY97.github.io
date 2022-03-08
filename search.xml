@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>杂</title>
+      <link href="2022/03/07/%E6%9D%82/"/>
+      <url>2022/03/07/%E6%9D%82/</url>
+      
+        <content type="html"><![CDATA[<h1>解决粘包分包问题</h1><p>在项目开发中，采用自定义的报文格式，报文长度+报文内容 例：0010abcdefghi</p><h1>网络字节序和主机字节序</h1><p>网络字节顺序NBO(Network Byte Order): 按从高到低的顺序存储，在网络上使用统一的网络字节顺序，可以避免兼容性问题。</p><p>主机字节顺序(HBO，Host Byte Order): 不同的机器HBO不相同，与CPU设计有关，数据的顺序是由cpu决定的,而与操作系统无关。如 Intel x86结构下, short型数0x1234表示为34 12, int型数0x12345678表示为78 56 34 12 。如 IBM power PC结构下, short型数0x1234表示为12 34, int型数0x12345678表示为12 34 56 78。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> socket </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>http</title>
       <link href="2021/11/04/http/"/>
       <url>2021/11/04/http/</url>
